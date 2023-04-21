@@ -45,6 +45,48 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
+@app.route ("/people", methods="GET")
+def list_all_people():
+    pass
+
+@app.route ("people/<int:people_id>", methods="GET")
+def list_one_people(people_id):
+    pass
+
+@app.route ("/planets", methods="GET")
+def list_all_people():
+    pass
+
+app.route ("planets/<int:planets_id>", methods="GET")
+def list_one_people(planets_id):
+    pass
+
+#end points para poder tener usuarios en nuestro blog
+
+@app.route("/users", methods="GET")
+def list_all_users():
+    pass
+
+@app.route("/users/favorites", methods="GET")
+def favorites_per_user():
+    pass
+
+@app.route("/users/favorites<int:planet_id>", methods="POST")
+def add_favorite_planet(id):
+    pass
+
+@app.route("/users/favorites<int:people_id>", methods="POST")
+def add_people(id):
+    pass
+
+@app.route("/users/favorites<int:planet_id>", methods="DELETE")
+def delete_favorite_planet(id):
+    pass
+
+@app.route("/users/favorites<int:people_id>", methods="POST")
+def delete_people(id):
+    pass
+
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
