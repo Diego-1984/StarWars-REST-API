@@ -45,7 +45,7 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@app.route ("/people", methods="GET")
+@app.route ("/people", methods=["GET"])
 def list_all_people():
     characters = People.query.all()
     response_people = [people.serialize() for people in characters]
@@ -54,19 +54,19 @@ def list_all_people():
     }
     return jsonify(response_people), 200
 
-@app.route ("user/<int:user_id>", methods="GET")
+@app.route ("/user/<int:user_id>", methods = ["GET"])
 def get_one_user(user_id):
     user = User.query.get(user_id)
     user = User.serialize()
     return jsonify(OneUser), 200
     
-@app.route ("character/<int:character_id>", methods="GET")
-def get_one_user(user_id):
-    user = User.query.get(user_id)
+@app.route ("/character/<int:people_id>", methods = ["GET"])
+def get_one_character(people_id):
+    user = User.query.get(people_id)
     user = User.serialize()
     return jsonify(OneCharacter), 200
 
-@app.route ("/planet", methods="GET")
+@app.route ("/planet", methods = ["GET"])
 def list_all_planets():
     planets = Planet.query.all()
     response_planets = [planet.serialize() for planet in planets]
@@ -75,51 +75,69 @@ def list_all_planets():
     }
     return jsonify(response_planets), 200
 
-app.route ("planet/<int:planet_id>", methods="GET")
+@app.route ("/planet/<int:planet_id>", methods = ["GET"])
 def get_one_plantet(planet_id):
     planet =  Planet.query.get(planet_id)
     planet = Planet.serialize()
     return jsonify(OnePlanet), 200
 
 
-@app.route("/user", methods="GET")
+@app.route("/user", methods= ["GET"])
 def list_all_users():
     users = User.query.all()
     response_user = [user.serialize() for user in users]
-    response_body={
+    response_body ={
         "msg":"Esta es la lista de usuarios"
     }
-    return jsonify(response_users), 200
+    return jsonify(response_body), 200
 
-@app.route("<int:user_id>/favorites", methods="GET")
+@app.route("/<int:user_id>/favorites", methods = ["GET"])
 def favorites_per_user(user_id):
     favorite = Favorite.query.filter_by(user_id=user_id).all()
     favorite_user = [Favorite.serialize() for favorite in favorite]
     return jsonify(favorite_user), 200
     
 
-@app.route("<int:user_id>/favorite/planet<int:planet_id>", methods="POST")
+@app.route("/<int:user_id>/favorite/<int:planet_id>", methods = ["GET"])
 def add_favorite_planet(user_id, planet_id):
-    favorite = Favorite (user_id = user_id, planet_id =planet_id)
+    favorite = Favorite (user_id = user_id, planet_id = planet_id)
     db.session.add(favorite)
     db.session.commit()
-    response_body={
+    response_body ={
         "msg":"Planeta agergado"
     }
     return jsonify(response_body), 200
     
 
-@app.route("/users/favorites<int:people_id>", methods="POST")
-def add_favorite_people(id):
-    pass
+@app.route("/<int:user_id>/favorite/people/<int:people_id>", methods = ["GET"])
+def add_favorite_people(user_id, people_id):
+    favorite = Favorite (user_id = user_id, people_id = people_id)
+    db.session.add(favorite)
+    db.session.commit()
+    response_body ={
+        "msg":"Personaje agregado"
+    }
+    return jsonify(response_body), 200
 
-@app.route("/users/favorites<int:planet_id>", methods="DELETE")
-def delete_favorite_planet(id):
-    pass
+@app.route("/<int:user_id>/favorite/plantet/<int:planet_id>", methods = ["DELETE"])
+def delete_favorite_planet(user_id, planet_id):
+    planet_deleted = Favorite.query.filter_by(user_id = user_id, planet_id = planet_id).first()
+    db.session.delete(planet_deleted)
+    db.session.commit
+    response_body = {
+        "msg":"Planeta eliminado"
+    }
+    return jsonify(response_body), 200
 
-@app.route("/users/favorites<int:people_id>", methods="POST")
-def delete_favorite_people(id):
-    pass
+@app.route("/<int:user_id>/favorites/people/<int:people_id>", methods = ["DELETE"])
+def delete_favorite_people(user_id, planet_id):
+    people_deleted = Favorite.query.filter_by(user_id = user_id, people_id = people_id).first()
+    db.session.delete(planet_deleted)
+    db.session.commit
+    response_body = {
+        "msg":"Personaje eliminado"
+    }
+    return jsonify(response_body), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
