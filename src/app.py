@@ -57,29 +57,30 @@ def list_all_people():
 @app.route ("/user/<int:user_id>", methods = ["GET"])
 def get_one_user(user_id):
     user = User.query.get(user_id)
-    user = User.serialize()
-    return jsonify(OneUser), 200
+    user = user.serialize()
+    return jsonify(user), 200
     
 @app.route ("/character/<int:people_id>", methods = ["GET"])
 def get_one_character(people_id):
-    user = User.query.get(people_id)
-    user = User.serialize()
-    return jsonify(OneCharacter), 200
+    character = Character.query.get(people_id)
+    character = character.serialize()
+    return jsonify(character), 200
 
 @app.route ("/planet", methods = ["GET"])
 def list_all_planets():
     planets = Planet.query.all()
     response_planets = [planet.serialize() for planet in planets]
     response_body ={
-        "msg":"Esta es la lista de planetas"
+        "msg":"Esta es la lista de planetas", 
+        "planets": response_planets
     }
-    return jsonify(response_planets), 200
+    return jsonify(response_body), 200
 
 @app.route ("/planet/<int:planet_id>", methods = ["GET"])
 def get_one_plantet(planet_id):
     planet =  Planet.query.get(planet_id)
-    planet = Planet.serialize()
-    return jsonify(OnePlanet), 200
+    planet = planet.serialize()
+    return jsonify(planet), 200
 
 
 @app.route("/user", methods= ["GET"])
@@ -87,18 +88,19 @@ def list_all_users():
     users = User.query.all()
     response_user = [user.serialize() for user in users]
     response_body ={
-        "msg":"Esta es la lista de usuarios"
+        "msg":"Esta es la lista de usuarios",
+        "users": response_user
     }
     return jsonify(response_body), 200
 
 @app.route("/<int:user_id>/favorites", methods = ["GET"])
 def favorites_per_user(user_id):
-    favorite = Favorite.query.filter_by(user_id=user_id).all()
-    favorite_user = [Favorite.serialize() for favorite in favorite]
+    favorites = Favorite.query.filter_by(user_id = user_id).all()
+    favorite_user = [favorite.serialize() for favorite in favorites]
     return jsonify(favorite_user), 200
     
 
-@app.route("/<int:user_id>/favorite/<int:planet_id>", methods = ["GET"])
+@app.route("/<int:user_id>/favorite/<int:planet_id>", methods = ["POST"])
 def add_favorite_planet(user_id, planet_id):
     favorite = Favorite (user_id = user_id, planet_id = planet_id)
     db.session.add(favorite)
@@ -109,7 +111,7 @@ def add_favorite_planet(user_id, planet_id):
     return jsonify(response_body), 200
     
 
-@app.route("/<int:user_id>/favorite/people/<int:people_id>", methods = ["GET"])
+@app.route("/<int:user_id>/favorite/people/<int:people_id>", methods = ["POST"])
 def add_favorite_people(user_id, people_id):
     favorite = Favorite (user_id = user_id, people_id = people_id)
     db.session.add(favorite)
@@ -130,7 +132,7 @@ def delete_favorite_planet(user_id, planet_id):
     return jsonify(response_body), 200
 
 @app.route("/<int:user_id>/favorites/people/<int:people_id>", methods = ["DELETE"])
-def delete_favorite_people(user_id, planet_id):
+def delete_favorite_people(user_id, people_id):
     people_deleted = Favorite.query.filter_by(user_id = user_id, people_id = people_id).first()
     db.session.delete(planet_deleted)
     db.session.commit

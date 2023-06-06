@@ -32,7 +32,7 @@ class People(db.Model):
     name = db.Column(db.String(200), unique=True, nullable=False)
     description = db.Column(db.String(250), nullable = False)
     gender = db.Column(db.String(250))
-    height = db.Column(Integer)
+    height = db.Column(db.Integer)
     hair_color = db.Column(db.String(250))
     eye_color = db.Column(db.String(250))
     birth_year = db.Column(db.Integer)
@@ -57,16 +57,16 @@ class People(db.Model):
 class Planet(db.Model):
     __tablename__ = 'planet'
 
-    id = Column(Integer, primary_key=True)
-    image_url = Column(String(250), nullable=False)
-    name = Column(String(250), nullable=False)
-    description = Column(String(250), nullable = False)
-    climate = Column(String(250))
-    population = Column(Integer)
-    diameter = Column(Integer)
-    terrain = Column(String(250))
-    surface_water = Column(Integer)
-    orbital_period = Column(Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    image_url = db.Column(db.String(250), nullable=False)
+    name = db.Column(db.String(250), nullable=False)
+    description = db.Column(db.String(250), nullable = False)
+    climate = db.Column(db.String(250))
+    population = db.Column(db.Integer)
+    diameter = db.Column(db.Integer)
+    terrain = db.Column(db.String(250))
+    surface_water = db.Column(db.Integer)
+    orbital_period = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Planet %r>' % self.name
