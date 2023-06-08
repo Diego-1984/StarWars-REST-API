@@ -84,24 +84,12 @@ class Planet(db.Model):
             "surface_water": self.surface_water
         }
 
+class Favorites(Base):
+    __tablename__ = 'favorite'
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    basic_data_id = Column(Integer, ForeignKey('basic_data.id'), primary_key=True)
 
-class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship(User)
-    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
-    planet = db.relationship(Planet)
-    people_id = db.Column(db.Integer, db.ForeignKey('people.id'))
-    people = db.relationship(People)
-    
-
-    def __repr__(self):
-        return '<Favorite %r>' % self.id
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "planet_id": self.planet_id,
-            "people_id": self.people_id
-        }
+class basic_data(Base):
+    __tablename__ = 'basic_data'
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    name = Column(String(250), nullable=False)
