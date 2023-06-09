@@ -134,7 +134,7 @@ def delete_favorite_planet(user_id, planet_id):
 @app.route("/<int:user_id>/favorites/people/<int:people_id>", methods = ["DELETE"])
 def delete_favorite_people(user_id, people_id):
     people_deleted = Favorite.query.filter_by(user_id = user_id, people_id = people_id).first()
-    db.session.delete(planet_deleted)
+    db.session.delete(people_deleted)
     db.session.commit
     response_body = {
         "msg":"Personaje eliminado"
