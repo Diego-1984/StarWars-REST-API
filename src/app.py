@@ -100,46 +100,27 @@ def favorites_per_user(user_id):
     return jsonify(favorite_user), 200
     
 
-@app.route("/<int:user_id>/favorite/<int:planet_id>", methods = ["POST"])
-def add_favorite_planet(user_id, planet_id):
-    favorite = Favorite (user_id = user_id, planet_id = planet_id)
+@app.route("/<int:user_id>/favorite/<int:id>", methods = ["POST"])
+def add_favorite(user_id, id):
+    favorite = Favorite (user_id = user_id, basic_data_id = id)
     db.session.add(favorite)
     db.session.commit()
     response_body ={
-        "msg":"Planeta agergado"
+        "msg":"Favorito agregado"
     }
     return jsonify(response_body), 200
     
 
-@app.route("/<int:user_id>/favorite/people/<int:people_id>", methods = ["POST"])
-def add_favorite_people(user_id, people_id):
-    favorite = Favorite (user_id = user_id, people_id = people_id)
-    db.session.add(favorite)
-    db.session.commit()
-    response_body ={
-        "msg":"Personaje agregado"
+@app.route("/<int:user_id>/favorite/<int:id>", methods = ["DELETE"])
+def delete_favorite(user_id, id):
+    favorite_deleted = Favorite.query.filter_by(user_id = user_id, basic_data_id = id).first()
+    db.session.delete(favorite_deleted)
+    db.session.commit
+    response_body = {
+        "msg":"Favorito eliminado"
     }
     return jsonify(response_body), 200
 
-@app.route("/<int:user_id>/favorite/plantet/<int:planet_id>", methods = ["DELETE"])
-def delete_favorite_planet(user_id, planet_id):
-    planet_deleted = Favorite.query.filter_by(user_id = user_id, planet_id = planet_id).first()
-    db.session.delete(planet_deleted)
-    db.session.commit
-    response_body = {
-        "msg":"Planeta eliminado"
-    }
-    return jsonify(response_body), 200
-
-@app.route("/<int:user_id>/favorites/people/<int:people_id>", methods = ["DELETE"])
-def delete_favorite_people(user_id, people_id):
-    people_deleted = Favorite.query.filter_by(user_id = user_id, people_id = people_id).first()
-    db.session.delete(people_deleted)
-    db.session.commit
-    response_body = {
-        "msg":"Personaje eliminado"
-    }
-    return jsonify(response_body), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

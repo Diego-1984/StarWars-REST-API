@@ -36,6 +36,7 @@ class People(db.Model):
     hair_color = db.Column(db.String(250))
     eye_color = db.Column(db.String(250))
     birth_year = db.Column(db.Integer)
+    basic_data_id = Column(Integer, ForeignKey('basic_data.id'), primary_key=True)
 
     def __repr__(self):
         return '<People %r>' % self.name
@@ -67,6 +68,7 @@ class Planet(db.Model):
     terrain = db.Column(db.String(250))
     surface_water = db.Column(db.Integer)
     orbital_period = db.Column(db.Integer)
+    basic_data_id = Column(Integer, ForeignKey('basic_data.id'), primary_key=True)
 
     def __repr__(self):
         return '<Planet %r>' % self.name
